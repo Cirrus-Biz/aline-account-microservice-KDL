@@ -20,8 +20,8 @@ pipeline {
                  def mvn = tool 'MAVEN';
             }
             steps{
-                withSonarQubeEnv(installationName: "sonarqube scanner") {
-                bat "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=Sonarqube-account"
+                withSonarQubeEnv(installationName: "sonarqube") {
+                bat "${mvn}/bin/mvn clean verify sonar:sonar"
                 }
             }       
         }
