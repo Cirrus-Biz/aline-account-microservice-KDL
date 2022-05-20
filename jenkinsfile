@@ -17,7 +17,7 @@ pipeline {
 
         stage('SonarQube Analysis') {
             environment{
-                 def mvn = tool 'Default Maven';
+                 def mvn = tool 'maven';
             }
             steps{
                 withSonarQubeEnv(installationName: "sonarqube") {
