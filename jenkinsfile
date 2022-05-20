@@ -16,12 +16,12 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            environment{
-                 def mvn = tool 'Default Maven';
-            }
+            // environment{
+            //      def mvn = tool 'Default Maven';
+            // }
             steps{
                 withSonarQubeEnv(installationName: "sonarqube") {
-                bat "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=Sonarqube-account"
+                bat "mvn clean verify sonar:sonar -Dsonar.projectKey=Sonarqube-account"
                 }
             }       
         }
