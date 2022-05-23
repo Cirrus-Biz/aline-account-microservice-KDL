@@ -11,20 +11,21 @@ pipeline {
     stages {
         stage("Build MVN") {
             steps {
-                bat "mvn -Dmaven.test.failure.ignore=true clean package"
+                bat "mvn -Dmaven.test.failure.ignore=true clean install"
             }
         }
 
         stage('SonarQube Analysis') {
-            environment{
-                 def mvn = tool 'MAVEN';
-            }
             steps{
-                withSonarQubeEnv(installationName: "sonarqube") {
-                bat "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=Sonarqube-account"
+                script{
+                    withSonarQubeEnv(installationName: "sonarqube") {
+                        bat "mvn sonar:sonar -Dsonar.projectKey=aline-account-microservice"
+                        }
                 }
+
             }       
         }
+
 
 
         stage("Build Docker"){
