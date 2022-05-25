@@ -9,24 +9,28 @@ pipeline {
     }
 
     stages {
-        stage("Build MVN") {
-            steps {
-                bat "mvn -Dmaven.test.failure.ignore=true clean install"
-            }
-        }
-
         stage('SonarQube Analysis') {
             steps{
                 script{
                     withSonarQubeEnv(installationName: "sonarqube") {
-                        bat "mvn verify sonar:sonar -Dsonar.projectKey=aline-account-microservice"
+                        bat "mvn test sonar:sonar -Dsonar.projectKey=aline-account-microservice"
                         }
                 }
 
             }       
         }
 
+        stage('Quality Gate Check'){
+            steps{
+                waitForQualityGate abortPipeline: true
+            }
+        }
 
+        stage("Build MVN") {
+            steps {
+                bat "mvn -Dmaven.test.failure.ignore=true clean package"
+            }
+        }
 
         stage("Build Docker"){
             steps{
