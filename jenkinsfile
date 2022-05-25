@@ -13,7 +13,7 @@ pipeline {
             steps{
                 script{
                     withSonarQubeEnv(installationName: "sonarqube") {
-                        bat "mvn test sonar:sonar -Dsonar.projectKey=aline-account-microservice"
+                        bat "mvn verify test sonar:sonar -Dsonar.projectKey=aline-account-microservice"
                         }
                 }
 
@@ -22,7 +22,14 @@ pipeline {
 
         stage('Quality Gate Check'){
             steps{
-                waitForQualityGate abortPipeline: true
+                script{
+                    sleep(5)
+                    def qg = waitForQualityGate()
+                    if (qg.status != "OK"){
+                        error "Pipeline didn't meet quality gate standards"
+                    }
+                }
+                
             }
         }
 
