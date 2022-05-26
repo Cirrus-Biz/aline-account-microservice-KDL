@@ -23,7 +23,6 @@ pipeline {
         stage('Quality Gate Check'){
             steps{
                 script{
-                    sleep(5)
                     def qg = waitForQualityGate()
                     if (qg.status != "OK"){
                         error "Pipeline didn't meet quality gate standards"
@@ -39,38 +38,31 @@ pipeline {
             }
         }
 
-        stage("Build Docker"){
-            steps{
-                bat "docker build -t laxwalrus/capstone-account:$BUILD_NUMBER ."
+        // stage("Build Docker"){
+        //     steps{
+        //         bat "docker build -t laxwalrus/capstone-account:$BUILD_NUMBER ."
 
-            }            
-        }
-
-
-        stage("login to docker"){
-            steps{
-                bat "echo $DOCKERHUB_CREDENTIALS_PSW| docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
-            }
-        }
-
-        stage("Deploy Docker"){
-            steps{
-                bat "docker push laxwalrus/capstone-account:$BUILD_NUMBER"
-            }
-        }
-            
+        //     }            
+        // }
 
 
-        stage("Cleaning"){
-            steps{
-                bat "docker logout"
+        // stage("login to docker"){
+        //     steps{
+        //         bat "echo $DOCKERHUB_CREDENTIALS_PSW| docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
+        //     }
+        // }
+
+        // stage("Deploy Docker"){
+        //     steps{
+        //         bat "docker push laxwalrus/capstone-account:$BUILD_NUMBER"
+        //     }
+        // }
+
+        // stage("Cleaning"){
+        //     steps{
+        //         bat "docker logout"
             }
         }
         
-        stage('Archive') {
-            steps {
-            archiveArtifacts artifacts: 'account-microservice/target/*.jar', followSymlinks: false
-            }
-        }
     }
 }
