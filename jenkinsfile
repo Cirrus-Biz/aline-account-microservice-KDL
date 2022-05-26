@@ -61,8 +61,8 @@ pipeline {
         // stage("Cleaning"){
         //     steps{
         //         bat "docker logout"
-            }
-        }
+        //     }
+        // }
         
     }
 }
