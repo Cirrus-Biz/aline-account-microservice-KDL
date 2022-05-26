@@ -32,7 +32,7 @@ pipeline {
                 }
                 
             }
-        }
+        
 
         stage("Build MVN") {
             steps {
@@ -66,5 +66,5 @@ pipeline {
         //     }
         // }
         
-    // }
+    }
 }
