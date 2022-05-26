@@ -13,7 +13,7 @@ pipeline {
             steps{
                 script{
                     withSonarQubeEnv(installationName: "sonarqube") {
-                        bat "mvn clean verify sonar:sonar -Dsonar.projectKey=aline-account-microservice-KDL"
+                        bat "mvn clean package sonar:sonar -Dsonar.projectKey=aline-account-microservice-KDL"
                         }
                 }
 
