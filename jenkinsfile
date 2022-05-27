@@ -1,7 +1,4 @@
 pipeline {
-    environment {
-        DOCKERHUB_CREDENTIALS=credentials("Dockerhub")
-    }
     agent any
 
     tools {
@@ -13,7 +10,7 @@ pipeline {
             steps{
                 script{
                     withSonarQubeEnv(installationName: "sonarqube") {
-                        bat "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar -Dsonar.projectKey=aline-account-microservice-KDL"
+                        bat "mvn clean test sonar:sonar -Dsonar.projectKey=account-microservice-kdl"
                         }
                 }
 
@@ -23,7 +20,7 @@ pipeline {
         stage('Quality Gate Check'){
             steps{
                 script{
-                    timeout (time:5, unit:"MINUTES")
+                    sleep(5)
                         def qg = waitForQualityGate()
                         if(qg.status != 'OK'){
                             error "Pipeline aborted due to quality gate failure"
@@ -33,38 +30,34 @@ pipeline {
                 
             }
         
-
-        stage("Build MVN") {
+        stage("Build w/MVN") {
             steps {
-                bat "mvn -Dmaven.test.failure.ignore=true clean package"
+                bat "mvn clean package -Dskiptests"
             }
         }
 
-        // stage("Build Docker"){
-        //     steps{
-        //         bat "docker build -t laxwalrus/capstone-account:$BUILD_NUMBER ."
+        stage("Build Image w/docker"){
+            steps{
+                bat "docker build -t $env.AWS_ECR_REGISTRY/account-microservice-kdl:$BUILD_NUMBER ."
 
-        //     }            
-        // }
+            }            
+        }
 
-
-        // stage("login to docker"){
-        //     steps{
-        //         bat "echo $DOCKERHUB_CREDENTIALS_PSW| docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
-        //     }
-        // }
-
-        // stage("Deploy Docker"){
-        //     steps{
-        //         bat "docker push laxwalrus/capstone-account:$BUILD_NUMBER"
-        //     }
-        // }
-
-        // stage("Cleaning"){
-        //     steps{
-        //         bat "docker logout"
-        //     }
-        // }
+        stage("Deploy to AWS"){
+            steps{
+                script{
+                   docker.withRegistry("https://$env.AWS_ECR_REGISTRY", "ecr:$env.AWS_REGION:AWS"){
+                       docker.image("$env.AWS_ECR_REGISTRY/account-microservice-kdl:$BUILD_NUMBER").push()
+                   }
+                }
+            }
+        }
+            
+        stage("Cleaning"){
+            steps{
+                bat "docker system prune --all -f"
+            }
+        }
         
     }
-}
+    }
