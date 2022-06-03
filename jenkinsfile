@@ -10,7 +10,9 @@ pipeline {
             steps{
                 script{
                     withSonarQubeEnv(installationName: "sonarqube") {
-                        bat "mvn clean test sonar:sonar -Dsonar.projectKey=account-microservice-kdl"
+                        bat "mvn clean test"
+                        bat "mvn clean verify"
+                        bat "mvn clean package sonar:sonar -Dsonar.projectKey=account-microservice-kdl"
                         }
                 }
 
@@ -38,7 +40,7 @@ pipeline {
 
         stage("Build Image w/docker"){
             steps{
-                bat "docker build -t $env.AWS_ECR_REGISTRY/account-microservice-kdl:$BUILD_NUMBER ."
+                bat "docker build -t $env.AWS_ECR_REGISTRY/account-microservice-kdl:${GIT_COMMIT} ."
 
             }            
         }
@@ -47,7 +49,7 @@ pipeline {
             steps{
                 script{
                    docker.withRegistry("https://$env.AWS_ECR_REGISTRY", "ecr:$env.AWS_REGION:AWS"){
-                       docker.image("$env.AWS_ECR_REGISTRY/account-microservice-kdl:$BUILD_NUMBER").push()
+                       docker.image("$env.AWS_ECR_REGISTRY/account-microservice-kdl:${GIT_COMMIT}").push()
                    }
                 }
             }
