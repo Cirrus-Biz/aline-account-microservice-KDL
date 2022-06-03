@@ -55,9 +55,10 @@ pipeline {
         stage("Deploy to AWS"){
             steps{
                 script{
-                    COMMIT = ${GIT_COMMIT}[1..7]
+                    COMMIT = "${GIT_COMMIT}"
+                    SLICE = COMMIT[1..7]
                    docker.withRegistry("https://$env.AWS_ECR_REGISTRY", "ecr:$env.AWS_REGION:AWS"){
-                       docker.image("$env.AWS_ECR_REGISTRY/account-microservice-kdl:${COMMIT}.${BUILD_NUMBER}").push()
+                       docker.image("$env.AWS_ECR_REGISTRY/account-microservice-kdl:${SLICE}.${BUILD_NUMBER}").push()
                    }
                 }
             }
