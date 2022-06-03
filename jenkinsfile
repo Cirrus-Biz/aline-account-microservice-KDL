@@ -5,6 +5,12 @@ pipeline {
         maven "MAVEN"
     }
 
+    environment {
+
+        COMMIT = ${GIT_COMMIT}[0..6]
+        TAG = "${COMMIT}.${BUILD_NUMBER}"
+    }
+
     stages {
         stage('SonarQube Analysis') {
             steps{
@@ -38,7 +44,7 @@ pipeline {
 
         stage("Build Image w/docker"){
             steps{
-                bat "docker build -t $env.AWS_ECR_REGISTRY/account-microservice-kdl:${GIT_TAG} ."
+                bat "docker build -t $env.AWS_ECR_REGISTRY/account-microservice-kdl:${TAG} ."
 
             }            
         }
@@ -47,7 +53,7 @@ pipeline {
             steps{
                 script{
                    docker.withRegistry("https://$env.AWS_ECR_REGISTRY", "ecr:$env.AWS_REGION:AWS"){
-                       docker.image("$env.AWS_ECR_REGISTRY/account-microservice-kdl:${GIT_TAG}").push()
+                       docker.image("$env.AWS_ECR_REGISTRY/account-microservice-kdl:${TAG}").push()
                    }
                 }
             }
