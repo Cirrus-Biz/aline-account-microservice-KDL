@@ -7,9 +7,8 @@ pipeline {
 
     environment {
 
-        COMMIT = "${GIT_COMMIT}"
-        SLICED = COMMIT[1..7]
-        TAG = "${SLICED}.${BUILD_NUMBER}"
+        COMMIT = "${GIT_COMMIT}"[1..7]
+        TAG = "${COMMIT}.${BUILD_NUMBER}"
     }
 
     stages {
