@@ -38,7 +38,7 @@ pipeline {
 
         stage("Build Image w/docker"){
             steps{
-                bat "docker build -t $env.AWS_ECR_REGISTRY/account-microservice-kdl:${GIT_COMMIT} ."
+                bat "docker build -t $env.AWS_ECR_REGISTRY/account-microservice-kdl:${GIT_TAG} ."
 
             }            
         }
