@@ -47,7 +47,7 @@ pipeline {
             steps{
                 script{
                    docker.withRegistry("https://$env.AWS_ECR_REGISTRY", "ecr:$env.AWS_REGION:AWS"){
-                       docker.image("$env.AWS_ECR_REGISTRY/account-microservice-kdl:${GIT_COMMIT}").push()
+                       docker.image("$env.AWS_ECR_REGISTRY/account-microservice-kdl:${GIT_TAG}").push()
                    }
                 }
             }
