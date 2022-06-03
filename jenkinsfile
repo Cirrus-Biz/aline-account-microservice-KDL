@@ -5,6 +5,9 @@ pipeline {
         maven "MAVEN"
     }
 
+    environment{
+        COMMIT = ""
+    }
 
     stages {
         stage('SonarQube Analysis') {
@@ -40,8 +43,9 @@ pipeline {
         stage("Build Image w/docker"){
             steps{
                 script{
-                    COMMIT = ${GIT_COMMIT}[1..7]
-                    bat "docker build -t $env.AWS_ECR_REGISTRY/account-microservice-kdl:${COMMIT}.${BUILD_NUMBER} ."
+                    COMMIT = ${GIT_COMMIT}
+                    SLICE = COMMIT[1..7]
+                    bat "docker build -t $env.AWS_ECR_REGISTRY/account-microservice-kdl:${SLICE}.${BUILD_NUMBER} ."
                 }
                 
 
