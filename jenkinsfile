@@ -15,7 +15,7 @@ pipeline {
             steps{
                 script{
                     withSonarQubeEnv(installationName: "sonarqube") {
-                        bat "mvn clean test verify package sonar:sonar -Dsonar.projectKey=account-microservice-kdl"
+                        sh "mvn clean test verify sonar:sonar -Dsonar.projectKey=account-microservice-kdl"
                         }
                 }
 
@@ -39,7 +39,7 @@ pipeline {
         
         stage("Build w/MVN") {
             steps {
-                bat "mvn clean package -Dskiptests"
+                sh "mvn clean package -Dskiptests"
             }
         }
 
@@ -48,7 +48,7 @@ pipeline {
                 script{
                     COMMIT = "${GIT_COMMIT}"
                     SLICE = COMMIT[1..7]
-                    bat "docker build -t $env.AWS_ECR_REGISTRY/account-microservice-kdl:${SLICE}.${BUILD_NUMBER}.${DATE} ."
+                    sh "docker build -t $env.AWS_ECR_REGISTRY/account-microservice-kdl:${SLICE}.${BUILD_NUMBER}.${DATE} ."
                 }
                 
 
@@ -73,7 +73,7 @@ pipeline {
             
         stage("Cleaning"){
             steps{
-                bat "docker system prune --all -f"
+                sh "docker system prune --all -f"
             }
         }
         
