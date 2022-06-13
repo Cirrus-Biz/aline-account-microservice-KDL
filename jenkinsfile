@@ -67,9 +67,9 @@ pipeline {
             }
         }
 
-        stage("Deploy to AWS"){
-            // use docker compose to deploy/update microservies 
-        }
+        // stage("Deploy to AWS"){
+        //     // use docker compose to deploy/update microservies 
+        // }
             
         stage("Cleaning"){
             steps{
