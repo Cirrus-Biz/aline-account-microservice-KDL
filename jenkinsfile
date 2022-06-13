@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
-    tools {
-        maven "MAVEN"
-    }
+    // tools {
+    //     maven "MAVEN"
+    // }
 
     environment{
         COMMIT = ""
@@ -25,11 +25,13 @@ pipeline {
         stage('Quality Gate Check'){
             steps{
                 script{
-                    sleep(5)
+                     timeout(time: 3, unit: 'MINUTES'){
                         def qg = waitForQualityGate()
                         if(qg.status != 'OK'){
                             error "Pipeline aborted due to quality gate failure"
                     }
+                     }
+
                     }
                 }
                 
@@ -53,7 +55,7 @@ pipeline {
             }            
         }
 
-        stage("Deploy to AWS"){
+        stage("Publish to AWS"){
             steps{
                 script{
                     COMMIT = "${GIT_COMMIT}"
@@ -63,6 +65,10 @@ pipeline {
                    }
                 }
             }
+        }
+
+        stage("Deploy to AWS"){
+            // use docker compose to deploy/update microservies 
         }
             
         stage("Cleaning"){
