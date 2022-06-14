@@ -62,9 +62,6 @@ pipeline {
                 script{
                     COMMIT = "${GIT_COMMIT}"
                     SLICE = COMMIT[1..7]
-                    withCredentials([[$class: "UsernamePasswordMultiBinding", credentialsId: "AWS-KDL-2", usernameVariable: "AWS_ACCESS_KEY_ID", passwordVariable: "AWS_SECRET_ACCESS_KEY"]]){
-                        AWS("--region=$AWS_REGION")
-                    }
                    docker.withRegistry("https://$env.AWS_ECR_REGISTRY", "ecr:$env.AWS_REGION:AWS-KDL"){
                        docker.image("$env.AWS_ECR_REGISTRY/account-microservice-kdl:${SLICE}.${BUILD_NUMBER}.${DATE}").push()
                        docker.image("$env.AWS_ECR_REGISTRY/account-microservice-kdl:latest").push()
