@@ -65,7 +65,7 @@ pipeline {
                     SLICE = COMMIT[1..7]
                    docker.withRegistry("https://$env.AWS_ECR_REGISTRY", "ecr:$env.AWS_REGION:AWS-KDL"){
                        docker.image("$env.AWS_ECR_REGISTRY/account-microservice-kdl:${SLICE}.${BUILD_NUMBER}.${DATE}").push()
-                       docker.image("$env.AWS_ECR_REGISTRY/account-microservice-kdl:latest").push()
+                       docker.image("$env.AWS_ECR_REGISTRY/account-microservice-kdl:${SLICE}.${BUILD_NUMBER}.${DATE}").push("latest")
                    }
                 }
             }
