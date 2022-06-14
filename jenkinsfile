@@ -52,6 +52,8 @@ pipeline {
                     SLICE = COMMIT[1..7]
                     sh "sudo docker build -t $env.AWS_ECR_REGISTRY/account-microservice-kdl:${SLICE}.${BUILD_NUMBER}.${DATE} ."
                 }
+                    sh "sudo docker build -t $env.AWS_ECR_REGISTRY/account-microservice-kdl:latest ."
+                }
                 
 
             }            
