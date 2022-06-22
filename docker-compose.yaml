@@ -1,0 +1,87 @@
+version: '3.9'
+x-aws-vpc: "vpc-0ed6a4cac813253c5"
+x-aws-loadbalancer: "arn:aws:elasticloadbalancing:us-west-2:744758641322:loadbalancer/net/nlb-kdl/8322f9cebe1210a0"
+services:
+  # gateway service routes users
+  gateway:
+    image: ${AWS_ECR_REGISTRY}/gateway-microservice-kdl:latest
+    environment:
+      - SERVICE_HOST=${CIRRUSLBHOST}
+      # - SERVICE_HOST=${SERVICE_HOST}
+    ports:
+      - ${GATEWAY_PORT}:${GATEWAY_PORT}
+  # users service handles account creatation 
+  users:
+    image: ${AWS_ECR_REGISTRY}/users-microservice-kdl:latest
+    ports:
+      - ${USER_PORT}:${USER_PORT}
+    environment:
+      - USER_PORT=${USER_PORT}
+      - DBPORT=${DBPORT}
+      - DATABASE_NAME=${AWS_DATABASE}
+      - SECRET_KEY=${SECRET_KEY}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - DBNAME=${MYSQLDB_DATABASE}
+      - MYSQLDB=${MYSQLDB_USER}
+      - MYSQLDB_PASSWORD=${MYSQLDB_PASSWORD}
+
+  underwriter:
+    image: ${AWS_ECR_REGISTRY}/underwriter-microservice-kdl:latest
+    ports:
+      - ${UNDERWRITER_PORT}:${UNDERWRITER_PORT}
+
+    environment:
+      - UNDERWRITER_PORT=${UNDERWRITER_PORT}
+      - DBPORT=${DBPORT}
+      - DATABASE_NAME=${AWS_DATABASE}
+      - SECRET_KEY=${SECRET_KEY}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - DBNAME=${MYSQLDB_DATABASE}
+      - MYSQLDB=${MYSQLDB_USER}
+      - MYSQLDB_PASSWORD=${MYSQLDB_PASSWORD}
+
+   # handles transactions services
+  transaction:
+    image: ${AWS_ECR_REGISTRY}/transaction-microservice-kdl:latest
+    ports:
+      - ${TRANSACTION_PORT}:${TRANSACTION_PORT}
+
+    environment:
+      - TRANSACTION_PORT=${TRANSACTION_PORT}
+      - DBPORT=${DBPORT}
+      - DATABASE_NAME=${AWS_DATABASE}
+      - SECRET_KEY=${SECRET_KEY}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - DBNAME=${MYSQLDB_DATABASE}
+      - MYSQLDB=${MYSQLDB_USER}
+      - MYSQLDB_PASSWORD=${MYSQLDB_PASSWORD}
+
+   # bank and branches services
+  bank:
+    image: ${AWS_ECR_REGISTRY}/bank-microservice-kdl:latest
+    ports:
+      - ${BANK_PORT}:${BANK_PORT}
+    environment:
+      - BANK_PORT=${BANK_PORT}
+      - DBPORT=${DBPORT}
+      - DATABASE_NAME=${AWS_DATABASE}
+      - SECRET_KEY=${SECRET_KEY}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - DBNAME=${MYSQLDB_DATABASE}
+      - MYSQLDB=${MYSQLDB_USER}
+      - MYSQLDB_PASSWORD=${MYSQLDB_PASSWORD}
+
+ # checking/savings credit accounts service
+  account:
+    image: ${AWS_ECR_REGISTRY}/account-microservice-kdl:latest
+    ports:
+      - ${ACCOUNT_PORT}:${ACCOUNT_PORT}
+    environment:
+      - ACCOUNT_PORT=${ACCOUNT_PORT}
+      - DBPORT=${DBPORT}
+      - DATABASE_NAME=${AWS_DATABASE}
+      - SECRET_KEY=${SECRET_KEY}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - DBNAME=${MYSQLDB_DATABASE}
+      - MYSQLDB=${MYSQLDB_USER}
+      - MYSQLDB_PASSWORD=${MYSQLDB_PASSWORD}
