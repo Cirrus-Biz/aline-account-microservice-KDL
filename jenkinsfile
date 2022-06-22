@@ -87,7 +87,6 @@ pipeline {
                 sh "docker context create ecs kdl-ecs --from-env"
                 sh "docker context use kdl-ecs"    
                 sh "docker compose up -d --no-color --wait"
-                sh "docker compose ps --format json"
                 }
 
                 }
