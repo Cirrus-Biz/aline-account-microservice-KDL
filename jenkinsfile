@@ -74,7 +74,7 @@ pipeline {
 
         stage("create ECS"){
             steps{
-            sh "docker context use kdl-ecs"
+                sh "docker context use default" 
 
             }
 
@@ -84,6 +84,7 @@ pipeline {
             steps{
                 script{
                 docker.withRegistry("https://$env.AWS_ECR_REGISTRY", "ecr:$env.AWS_REGION:AWS-KDL"){
+                sh "docker context use kdl-ecs"    
                 sh " docker compose up -d --no-color --wait"
                 sh "docker compose ps --format json"
                 }
