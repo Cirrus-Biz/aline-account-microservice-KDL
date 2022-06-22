@@ -77,16 +77,8 @@ pipeline {
             }
         }
 
-        stage("Docker Hard Clean"){
-            steps{
-            sh "docker context use default"
-            }
-
-        }
-
         stage("create ECS"){
             steps{
-            sh "docker context create ecs kdl-ecs --from-env"
             sh "docker context use kdl-ecs"
 
             }
@@ -100,8 +92,7 @@ pipeline {
             }
 
         }
-            
-            
+               
         stage("Cleaning"){
             steps{
                 sh "sudo docker system prune --all -f"
