@@ -74,7 +74,7 @@ pipeline {
 
         stage("create ECS"){
             steps{
-            sh "docker context use kdl-ecs"
+                sh "docker context use default" 
 
             }
 
@@ -84,6 +84,7 @@ pipeline {
             steps{
                 script{
                 docker.withRegistry("https://$env.AWS_ECR_REGISTRY", "ecr:$env.AWS_REGION:AWS-KDL"){
+                sh "docker context use kdl-ecs"    
                 sh " docker compose up -d --no-color --wait"
                 sh "docker compose ps --format json"
                 }
@@ -93,19 +94,6 @@ pipeline {
             }
 
         }
-               
-        stage("Cleaning"){
-            steps{
-                sh "sudo docker system prune --all -f"
-                sh "sudo docker logout"
-                sh "sudo rm -rf ~/.aws/"
-                sh "sudo rm -rf ~/.sonar/*"
-                sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/*'
-                sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/.git*' 
-
-            }
-        }
-        
 
 
     }
@@ -113,6 +101,12 @@ pipeline {
     post {
         always{
             sh "docker context use default"
+            sh "sudo docker system prune --all -f"
+            sh "sudo docker logout"
+            sh "sudo rm -rf ~/.aws/"
+            sh "sudo rm -rf ~/.sonar/*"
+            sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/*'
+            sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/.git*'
         }
     }
 }
