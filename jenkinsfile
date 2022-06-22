@@ -72,20 +72,30 @@ pipeline {
         }
 
         stage("Docker Hard Clean"){
+            steps{
             sh "docker compose down"
             sh "docker context use default"
             sh "sudo docker system prune -a -volumes -f"
             sh "docker context rm kdl-ecs"
+            }
+
         }
 
         stage("create ECS"){
+            steps{
             sh "docker context create ecs kdl-ecs --from-env"
             sh "docker context use kdl-ecs"
+
+            }
+
         }
 
         stage("docker compose up"){
+            steps{
             sh " docker compose up -d --no-color --wait"
             sh "docker compose ps --format json"
+            }
+
         }
             
             
