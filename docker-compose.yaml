@@ -6,82 +6,82 @@ services:
   gateway:
     image: ${AWS_ECR_REGISTRY}/gateway-microservice-kdl:latest
     environment:
-      - SERVICE_HOST=${CIRRUSLBHOST}
+      - SERVICE_HOST=${KDL_CIRRUSLBHOST}
       # - SERVICE_HOST=${SERVICE_HOST}
     ports:
-      - ${GATEWAY_PORT}:${GATEWAY_PORT}
+      - ${KDL_GATEWAY_PORT}:${KDL_GATEWAY_PORT}
   # users service handles account creatation 
   users:
     image: ${AWS_ECR_REGISTRY}/users-microservice-kdl:latest
     ports:
-      - ${USER_PORT}:${USER_PORT}
+      - ${KDL_USER_PORT}:${KDL_USER_PORT}
     environment:
-      - USER_PORT=${USER_PORT}
-      - DBPORT=${DBPORT}
-      - DATABASE_NAME=${AWS_DATABASE}
-      - SECRET_KEY=${SECRET_KEY}
-      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
-      - DBNAME=${MYSQLDB_DATABASE}
-      - MYSQLDB=${MYSQLDB_USER}
-      - MYSQLDB_PASSWORD=${MYSQLDB_PASSWORD}
+      - USER_PORT=${KDL_USER_PORT}
+      - DBPORT=${KDL_DBPORT}
+      - DATABASE_NAME=${KDL_AWS_DATABASE}
+      - SECRET_KEY=${KDL_SECRET_KEY}
+      - JWT_SECRET_KEY=${KDL_JWT_SECRET_KEY}
+      - DBNAME=${KDL_MYSQLDB_DATABASE}
+      - MYSQLDB=${KDL_MYSQLDB_USER}
+      - MYSQLDB_PASSWORD=${KDL_MYSQLDB_PASSWORD}
 
   underwriter:
     image: ${AWS_ECR_REGISTRY}/underwriter-microservice-kdl:latest
     ports:
-      - ${UNDERWRITER_PORT}:${UNDERWRITER_PORT}
+      - ${KDL_UNDERWRITER_PORT}:${KDL_UNDERWRITER_PORT}
 
     environment:
-      - UNDERWRITER_PORT=${UNDERWRITER_PORT}
-      - DBPORT=${DBPORT}
-      - DATABASE_NAME=${AWS_DATABASE}
-      - SECRET_KEY=${SECRET_KEY}
-      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
-      - DBNAME=${MYSQLDB_DATABASE}
-      - MYSQLDB=${MYSQLDB_USER}
-      - MYSQLDB_PASSWORD=${MYSQLDB_PASSWORD}
+      - UNDERWRITER_PORT=${KDL_UNDERWRITER_PORT}
+      - DBPORT=${KDL_DBPORT}
+      - DATABASE_NAME=${KDL_AWS_DATABASE}
+      - SECRET_KEY=${KDL_SECRET_KEY}
+      - JWT_SECRET_KEY=${KDL_JWT_SECRET_KEY}
+      - DBNAME=${KDL_MYSQLDB_DATABASE}
+      - MYSQLDB=${KDL_MYSQLDB_USER}
+      - MYSQLDB_PASSWORD=${KDL_MYSQLDB_PASSWORD}
 
    # handles transactions services
   transaction:
     image: ${AWS_ECR_REGISTRY}/transaction-microservice-kdl:latest
     ports:
-      - ${TRANSACTION_PORT}:${TRANSACTION_PORT}
+      - ${KDL_TRANSACTION_PORT}:${KDL_TRANSACTION_PORT}
 
     environment:
-      - TRANSACTION_PORT=${TRANSACTION_PORT}
-      - DBPORT=${DBPORT}
-      - DATABASE_NAME=${AWS_DATABASE}
-      - SECRET_KEY=${SECRET_KEY}
-      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
-      - DBNAME=${MYSQLDB_DATABASE}
-      - MYSQLDB=${MYSQLDB_USER}
-      - MYSQLDB_PASSWORD=${MYSQLDB_PASSWORD}
+      - TRANSACTION_PORT=${KDL_TRANSACTION_PORT}
+      - DBPORT=${KDL_DBPORT}
+      - DATABASE_NAME=${KDL_AWS_DATABASE}
+      - SECRET_KEY=${KDL_SECRET_KEY}
+      - JWT_SECRET_KEY=${KDL_JWT_SECRET_KEY}
+      - DBNAME=${KDL_MYSQLDB_DATABASE}
+      - MYSQLDB=${KDL_MYSQLDB_USER}
+      - MYSQLDB_PASSWORD=${KDL_MYSQLDB_PASSWORD}
 
    # bank and branches services
   bank:
     image: ${AWS_ECR_REGISTRY}/bank-microservice-kdl:latest
     ports:
-      - ${BANK_PORT}:${BANK_PORT}
+      - ${KDL_BANK_PORT}:${KDL_BANK_PORT}
     environment:
-      - BANK_PORT=${BANK_PORT}
-      - DBPORT=${DBPORT}
-      - DATABASE_NAME=${AWS_DATABASE}
-      - SECRET_KEY=${SECRET_KEY}
-      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
-      - DBNAME=${MYSQLDB_DATABASE}
-      - MYSQLDB=${MYSQLDB_USER}
-      - MYSQLDB_PASSWORD=${MYSQLDB_PASSWORD}
+      - BANK_PORT=${KDL_BANK_PORT}
+      - DBPORT=${KDL_DBPORT}
+      - DATABASE_NAME=${KDL_AWS_DATABASE}
+      - SECRET_KEY=${KDL_SECRET_KEY}
+      - JWT_SECRET_KEY=${KDL_JWT_SECRET_KEY}
+      - DBNAME=${KDL_MYSQLDB_DATABASE}
+      - MYSQLDB=${KDL_MYSQLDB_USER}
+      - MYSQLDB_PASSWORD=${KDL_MYSQLDB_PASSWORD}
 
  # checking/savings credit accounts service
   account:
     image: ${AWS_ECR_REGISTRY}/account-microservice-kdl:latest
     ports:
-      - ${ACCOUNT_PORT}:${ACCOUNT_PORT}
+      - ${KDL_ACCOUNT_PORT}:${KDL_ACCOUNT_PORT}
     environment:
-      - ACCOUNT_PORT=${ACCOUNT_PORT}
-      - DBPORT=${DBPORT}
-      - DATABASE_NAME=${AWS_DATABASE}
-      - SECRET_KEY=${SECRET_KEY}
-      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
-      - DBNAME=${MYSQLDB_DATABASE}
-      - MYSQLDB=${MYSQLDB_USER}
-      - MYSQLDB_PASSWORD=${MYSQLDB_PASSWORD}
+      - ACCOUNT_PORT=${KDL_ACCOUNT_PORT}
+      - DBPORT=${KDL_DBPORT}
+      - DATABASE_NAME=${KDL_AWS_DATABASE}
+      - SECRET_KEY=${KDL_SECRET_KEY}
+      - JWT_SECRET_KEY=${KDL_JWT_SECRET_KEY}
+      - DBNAME=${KDL_MYSQLDB_DATABASE}
+      - MYSQLDB=${KDL_MYSQLDB_USER}
+      - MYSQLDB_PASSWORD=${KDL_MYSQLDB_PASSWORD}
