@@ -1,6 +1,6 @@
 version: '3.9'
 x-aws-vpc: "vpc-0ed6a4cac813253c5"
-x-aws-loadbalancer: "arn:aws:elasticloadbalancing:us-west-2:744758641322:loadbalancer/net/nlb-kdl/8322f9cebe1210a0"
+x-aws-loadbalancer: "arn:aws:elasticloadbalancing:us-east-1:744758641322:loadbalancer/net/nlb-ac/a76d75f1fc8755ac"
 services:
   # gateway service routes users
   gateway:
