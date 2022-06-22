@@ -71,9 +71,23 @@ pipeline {
             }
         }
 
-        // stage("Deploy to AWS"){
-        //     // use docker compose to deploy/update microservies 
-        // }
+        stage("Docker Hard Clean"){
+            sh "docker compose down"
+            sh "docker context use default"
+            sh "sudo docker system prune -a -volumes -f"
+            sh "docker context rm kdl-ecs"
+        }
+
+        stage("create ECS"){
+            sh "docker context create ecs kdl-ecs --from-env"
+            sh "docker context use kdl-ecs"
+        }
+
+        stage("docker compose up"){
+            sh " docker compose up -d --no-color --wait"
+            sh "docker compose ps --format json"
+        }
+            
             
         stage("Cleaning"){
             steps{
@@ -83,10 +97,12 @@ pipeline {
                 sh "sudo rm -rf ~/.sonar/*"
                 sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/*'
                 sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/.git*' 
-
-
+                sh "docker context use default"
             }
         }
         
+
+
     }
-    }
+}
+
