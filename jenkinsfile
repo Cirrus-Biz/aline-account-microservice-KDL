@@ -45,11 +45,6 @@ pipeline {
             }
         }
 
-        stage("Testing envs will be deleted"){
-            steps{
-                sh "printenv"
-            }
-        }
 
         stage("Build Image w/docker"){
             steps{
