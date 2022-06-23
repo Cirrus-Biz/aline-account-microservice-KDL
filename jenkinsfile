@@ -9,7 +9,7 @@ pipeline {
     environment{
         COMMIT = ""
         DATE = new Date().format('M-yy')
-        github = credentials("Github-KDL")
+        githubtoken = credentials("Github-token-KDL")
         THE_BUTLER_SAYS_SO=credentials('AWS-KDL')
     }
 
@@ -75,7 +75,7 @@ pipeline {
 
         stage("docker compose grab"){
             steps {
-                sh "curl https://raw.githubusercontent.com/Cirrus-Biz/DevOPS-KDL/main/AWS/docker-compose_AWS.yaml?token=GHSAT0AAAAAABTXBF7MFGO3A73D777J5HUEYVU2YOA -o docker-compose.yaml"
+                sh "curl -H 'Authorization: token ${githubtoken}' \ -H https://raw.githubusercontent.com/Cirrus-Biz/DevOPS-KDL/main/AWS/docker-compose_AWS.yaml?token=GHSAT0AAAAAABTXBF7MFGO3A73D777J5HUEYVU2YOA -o docker-compose.yaml"
 
                 sh "cat docker-compose.yaml"
             }
