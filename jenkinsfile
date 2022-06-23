@@ -73,10 +73,11 @@ pipeline {
         //     }
         // }
 
-        stage("docker compose grab")
+        stage("docker compose grab"){
             steps {
                 sh "curl https://raw.githubusercontent.com/Cirrus-Biz/DevOPS-KDL/main/AWS/docker-compose_AWS.yaml?token=GHSAT0AAAAAABTXBF7MFGO3A73D777J5HUEYVU2YOA -o docker-compose.yaml"
             }
+        }
 
         stage("create ECS"){
             steps{
