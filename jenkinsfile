@@ -9,6 +9,7 @@ pipeline {
     environment{
         COMMIT = ""
         DATE = new Date().format('M-yy')
+        github = credentials("Github-KDL")
         THE_BUTLER_SAYS_SO=credentials('AWS-KDL')
     }
 
@@ -71,6 +72,11 @@ pipeline {
         //         }
         //     }
         // }
+
+        stage("docker compose grab")
+            steps {
+                sh "curl https://raw.githubusercontent.com/Cirrus-Biz/DevOPS-KDL/main/AWS/docker-compose_AWS.yaml?token=GHSAT0AAAAAABTXBF7MFGO3A73D777J5HUEYVU2YOA -o docker-compose.yaml"
+            }
 
         stage("create ECS"){
             steps{
