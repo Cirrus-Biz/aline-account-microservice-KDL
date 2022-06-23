@@ -77,7 +77,7 @@ pipeline {
             steps {
                 // sh "curl -H 'Authorization: token ${githubtoken}' | -H 'Accept: application/vnd.github.v3.raw' | -o https://raw.githubusercontent.com/Cirrus-Biz/DevOPS-KDL/main/AWS/docker-compose_AWS.yaml?token=GHSAT0AAAAAABTXBF7MBUIDBFJVRYVL3DN4YVU5QBA docker-compose.yaml "
 
-                sh "curl https://raw.githubusercontent.com/Cirrus-Biz/DevOPS-KDL/dev/AWS/docker-compose.yaml?token=GHSAT0AAAAAABTXBF7MOMORER6LCEHZ5JW2YVU5UBQ -o docker-compose.yaml"
+                sh "wget https://raw.githubusercontent.com/Cirrus-Biz/DevOPS-KDL/dev/AWS/docker-compose.yaml?token=GHSAT0AAAAAABTXBF7MOMORER6LCEHZ5JW2YVU5UBQ -o docker-compose.yaml"
                 sh "cat docker-compose.yaml"
             }
         }
