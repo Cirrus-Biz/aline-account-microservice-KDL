@@ -44,38 +44,38 @@ pipeline {
                 
         //     }
         
-        stage("Build w/MVN") {
-            steps {
-                sh "mvn clean package -Dskiptests"
-            }
-        }
+        // stage("Build w/MVN") {
+        //     steps {
+        //         sh "mvn clean package -Dskiptests"
+        //     }
+        // }
 
 
-        stage("Build Image w/docker"){
-            steps{
-                script{
-                    COMMIT = "${GIT_COMMIT}"
-                    SLICE = COMMIT[1..7]
-                    sh "sudo docker build -t $env.AWS_ECR_REGISTRY_WEST/account-microservice-kdl:${SLICE}.${BUILD_NUMBER}.${DATE} ."
-                    sh "sudo docker build -t $env.AWS_ECR_REGISTRY_WEST/account-microservice-kdl:${SLICE}.${BUILD_NUMBER}.${DATE} ."
-                }
+        // stage("Build Image w/docker"){
+        //     steps{
+        //         script{
+        //             COMMIT = "${GIT_COMMIT}"
+        //             SLICE = COMMIT[1..7]
+        //             sh "sudo docker build -t $env.AWS_ECR_REGISTRY_WEST/account-microservice-kdl:${SLICE}.${BUILD_NUMBER}.${DATE} ."
+        //             sh "sudo docker build -t $env.AWS_ECR_REGISTRY_WEST/account-microservice-kdl:${SLICE}.${BUILD_NUMBER}.${DATE} ."
+        //         }
                 
 
-            }            
-        }
+        //     }            
+        // }
 
-        stage("Publish to AWS"){
-            steps{
-                script{
-                    COMMIT = "${GIT_COMMIT}"
-                    SLICE = COMMIT[1..7]
-                   docker.withRegistry("https://$env.AWS_ECR_REGISTRY_WEST", "ecr:$env.AWS_REGION_WEST:AWS-KDL"){
-                       docker.image("$env.AWS_ECR_REGISTRY_WEST/account-microservice-kdl:${SLICE}.${BUILD_NUMBER}.${DATE}").push()
-                       docker.image("$env.AWS_ECR_REGISTRY_WEST/account-microservice-kdl:${SLICE}.${BUILD_NUMBER}.${DATE}").push("latest")
-                   }
-                }
-            }
-        }
+        // stage("Publish to AWS"){
+        //     steps{
+        //         script{
+        //             COMMIT = "${GIT_COMMIT}"
+        //             SLICE = COMMIT[1..7]
+        //            docker.withRegistry("https://$env.AWS_ECR_REGISTRY_WEST", "ecr:$env.AWS_REGION_WEST:AWS-KDL"){
+        //                docker.image("$env.AWS_ECR_REGISTRY_WEST/account-microservice-kdl:${SLICE}.${BUILD_NUMBER}.${DATE}").push()
+        //                docker.image("$env.AWS_ECR_REGISTRY_WEST/account-microservice-kdl:${SLICE}.${BUILD_NUMBER}.${DATE}").push("latest")
+        //            }
+        //         }
+        //     }
+        // }
 
         stage("Grab docker compose file"){
             steps {
@@ -107,11 +107,10 @@ pipeline {
                  
                 sh "cat docker-compose.yaml"
                 sh "docker context use kdl-ecs"
-                docker.withRegistry("https://$env.AWS_ECR_REGISTRY_WEST", "ecr:$env.AWS_REGION_WEST:AWS-KDL"){
                  
                 sh "docker compose up -d --no-color --wait"
 
-                   }
+                   
                 }
 
             }
