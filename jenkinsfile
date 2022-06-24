@@ -88,6 +88,7 @@ pipeline {
         stage("docker compose up"){
             steps{
                 script{
+                docker.withRegistry("https://$env.AWS_ECR_REGISTRY_WEST", "ecr:$env.AWS_REGION_WEST:AWS-KDL"){
                 sh "docker context use default"  
 
                 sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY} --profile KDL-AWS-PROFILE"
@@ -109,7 +110,7 @@ pipeline {
                 sh "docker context use kdl-ecs"    
                 sh "docker compose up -d --no-color --wait"
 
-
+                   }
                 }
 
             }
