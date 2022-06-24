@@ -76,7 +76,7 @@ pipeline {
         stage("Grab docker compose file"){
             steps {
 
-                sh "curl -H 'Authorization: token ${githubtoken}' https://raw.githubusercontent.com/Cirrus-Biz/DevOPS-KDL/dev/AWS/docker-compose.yaml?token=GHSAT0AAAAAABTXBF7NJT32AJUZWL4HEQTAYVVCORQ -o docker-compose.yaml"
+                sh "curl -H 'Authorization: token ${githubtoken}' https://raw.githubusercontent.com/Cirrus-Biz/DevOPS-KDL/dev/AWS/docker-compose.yaml -o docker-compose.yaml"
             }
         }
 
@@ -88,7 +88,7 @@ pipeline {
                 sh "aws configure set default.region ${AWS_REGION_WEST}" 
                 sh "docker context use default" 
                 sh "cat docker-compose.yaml"
-                // sh "docker context create ecs kdl-ecs --from-env"
+                sh "docker context create ecs kdl-ecs --from-env"
                 sh "docker context use kdl-ecs"    
                 sh "docker compose up -d --no-color --wait"
                 }
