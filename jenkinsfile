@@ -10,7 +10,11 @@ pipeline {
         COMMIT = ""
         DATE = new Date().format('M-yy')
         githubtoken = credentials("Github-token-KDL")
+        AWS-ACCESS-KEY = credentials("KDL-SECRET-KEY")
+        AWS-SECRET-ACCESS-KEY = credentials("KDL-SECRET-KEY-2")
+        AWS-PROFILE-KDL = credentials("KDL-AWS-PROFILE")
         THE_BUTLER_SAYS_SO=credentials('AWS-KDL')
+
     }
 
     stages {
@@ -85,8 +89,12 @@ pipeline {
             steps{
                 script{
                 docker.withRegistry("https://$env.AWS_ECR_REGISTRY_WEST", "ecr:$env.AWS_REGION_WEST:AWS-KDL"){
-                sh "aws configure set default.region ${AWS_REGION_WEST}" 
-                sh "docker context use default" 
+                sh "docker context use default"  
+                  
+                sh "aws configure set default.region ${AWS_REGION_WEST} --profile ${AWS-PROFILE-KDL}" 
+                sh "aws configure set aws_access_key_id ${AWS-ACCESS-KEY} --profile ${AWS-PROFILE-KDL}"
+                sh "aws configure set aws_secret_access_key ${AWS-SECRET-ACCESS-KEY} --profile ${AWS-PROFILE-KDL}"
+                 
                 sh "cat docker-compose.yaml"
                 sh "docker context create ecs kdl-ecs --from-env"
                 sh "docker context use kdl-ecs"    
