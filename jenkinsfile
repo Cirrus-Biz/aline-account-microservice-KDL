@@ -91,14 +91,14 @@ pipeline {
                 // docker.withRegistry("https://$env.AWS_ECR_REGISTRY_WEST", "ecr:$env.AWS_REGION_WEST:AWS-KDL"){
                 sh "docker context use default"  
 
-                sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY} --profile ${AWS_PROFILE_KDL1}"
-                sh "aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} --profile ${AWS_PROFILE_KDL1}"
+                sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY} --profile KDL-AWS-PROFILE"
+                sh "aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} --profile KDL-AWS-PROFILE}"
 
-                sh "aws configure set default.region ${AWS_REGION_WEST} --profile ${AWS_PROFILE_KDL1}" 
+                sh "aws configure set default.region ${AWS_REGION_WEST} --profile KDL-AWS-PROFILE" 
 
-                sh "aws configure set output json --profile ${AWS_PROFILE_KDL1}"
+                sh "aws configure set output json --profile KDL-AWS-PROFILE"
 
-                sh "export AWS_PROFILE=${KDL_AWS_PROFILE1}"
+                sh "export AWS_PROFILE=KDL-AWS-PROFILE"
 
                 sh "aws ecr get-login-password --region ${AWS_REGION_WEST} | sudo docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_WEST}"
 
