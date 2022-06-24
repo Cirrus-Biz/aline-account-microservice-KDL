@@ -12,7 +12,7 @@ pipeline {
         githubtoken = credentials("Github-token-KDL")
         AWS_ACCESS_KEY = credentials("KDL-SECRET-KEY")
         AWS_SECRET_ACCESS_KEY = credentials("KDL-SECRET-KEY-2")
-        AWS_PROFILE_KDL = credentials("KDL-AWS-PROFILE")
+        AWS_PROFILE_KDL1 = credentials("KDL-AWS-PROFILE")
         THE_BUTLER_SAYS_SO=credentials('AWS-KDL')
 
     }
@@ -91,14 +91,14 @@ pipeline {
                 // docker.withRegistry("https://$env.AWS_ECR_REGISTRY_WEST", "ecr:$env.AWS_REGION_WEST:AWS-KDL"){
                 sh "docker context use default"  
 
-                sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY} --profile ${AWS_PROFILE_KDL}"
-                sh "aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} --profile ${AWS_PROFILE_KDL}"
+                sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY} --profile ${AWS_PROFILE_KDL1}"
+                sh "aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} --profile ${AWS_PROFILE_KDL1}"
 
-                sh "aws configure set default.region ${AWS_REGION_WEST} --profile ${AWS_PROFILE_KDL}" 
+                sh "aws configure set default.region ${AWS_REGION_WEST} --profile ${AWS_PROFILE_KDL1}" 
 
-                sh "aws configure set output json --profile ${AWS_PROFILE_KDL}"
+                sh "aws configure set output json --profile ${AWS_PROFILE_KDL1}"
 
-                sh "export AWS_PROFILE=${KDL-AWS-PROFILE}"
+                sh "export AWS_PROFILE=${KDL-AWS-PROFILE1}"
 
                 sh "aws ecr get-login-password --region ${AWS_REGION_WEST} | sudo docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_WEST}"
 
