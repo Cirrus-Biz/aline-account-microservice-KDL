@@ -82,7 +82,7 @@ pipeline {
 
         stage("create ECS"){
             steps{
-                sh "docker context use default" 
+                
 
             }
 
@@ -93,7 +93,7 @@ pipeline {
                 script{
                 docker.withRegistry("https://$env.AWS_ECR_REGISTRY_WEST", "ecr:$env.AWS_REGION_WEST:AWS-KDL"){
                 sh "aws configure set default.region ${AWS_REGION_WEST}" 
-                sh "cat docker-compose.yaml"
+                sh "docker context use default" 
                 sh "docker context create ecs kdl-ecs --from-env"
                 sh "docker context use kdl-ecs"    
                 sh "docker compose up -d --no-color --wait"
