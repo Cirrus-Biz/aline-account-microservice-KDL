@@ -92,7 +92,7 @@ pipeline {
         stage("docker compose up"){
             steps{
                 script{
-                docker.withRegistry("https://$env.AWS_ECR_REGISTRY", "ecr:$env.AWS_REGION_WEST:AWS-KDL"){
+                docker.withRegistry("https://$env.AWS_ECR_REGISTRY_WEST", "ecr:$env.AWS_REGION_WEST:AWS-KDL"){
                 sh "docker context create ecs kdl-ecs --from-env"
                 sh "docker context use kdl-ecs"    
                 sh "docker compose up -d --no-color --wait"
