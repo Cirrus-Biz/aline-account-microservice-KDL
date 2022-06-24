@@ -76,7 +76,7 @@ pipeline {
         stage("Grab docker compose file"){
             steps {
 
-                sh "curl -H 'Authorization: token ${githubtoken}' https://raw.githubusercontent.com/Cirrus-Biz/DevOPS-KDL/dev/AWS/docker-compose.yaml?token=GHSAT0AAAAAABTXBF7MOMORER6LCEHZ5JW2YVU5UBQ -o docker-compose.yaml"
+                sh "curl -H 'Authorization: token ${githubtoken}' https://raw.githubusercontent.com/Cirrus-Biz/DevOPS-KDL/dev/AWS/docker-compose.yaml?token=GHSAT0AAAAAABTXBF7NJT32AJUZWL4HEQTAYVVCORQ -o docker-compose.yaml"
             }
         }
 
