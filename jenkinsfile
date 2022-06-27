@@ -107,8 +107,8 @@ pipeline {
 
                                  
 
-                sh "docker context create ecs kdl-ecs-profile --profile KDL-AWS-PROFILE"
-                sh "docker context use kdl-ecs-profile"
+                sh "docker context create ecs kdl-ecs --from-env"
+                sh "docker context use kdl-ecs"
 
        
                  
@@ -134,6 +134,7 @@ pipeline {
             sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/*'
             sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/.git*'
             sh "aws configure set default.region ${AWS_REGION}" 
+            sh "docker context rm kdl-ecs"
         }
     }
 }
