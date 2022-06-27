@@ -107,8 +107,8 @@ pipeline {
 
                                  
 
-
-                sh "docker context use kdl-ecs"
+                sh "docker context create ecs kdl-ecs-profile --profile KDL-AWS-PROFILE"
+                sh "docker context use kdl-ecs-profile"
 
        
                  
