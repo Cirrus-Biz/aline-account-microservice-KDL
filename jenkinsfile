@@ -107,7 +107,7 @@ pipeline {
                 sh "cat docker-compose.yaml"
                 sh "docker context use kdl-ecs"
 
-                sh "docker logout"
+                sh "sudo docker logout"
                 // sh "aws ecr get-login-password --region ${AWS_REGION_WEST} | sudo docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_WEST}"                
                  
                 sh "docker compose up -d --no-color --wait"
