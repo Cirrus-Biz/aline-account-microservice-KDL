@@ -101,15 +101,12 @@ pipeline {
 
                 sh "export AWS_PROFILE=KDL-AWS-PROFILE"
 
+                sh "echo ${DOCKER_PASSWORD_KDL} | docker login --username ${DOCKER_USERNAME_KDL} --password-stdin"                    
 
 
-
-
-                 
-                sh "cat docker-compose.yaml"
                 sh "docker context use kdl-ecs"
 
-                sh "echo ${DOCKER_PASSWORD_KDL} | docker login --username ${DOCKER_USERNAME_KDL} --password-stdin"           
+       
                  
                 sh "docker compose up -d --no-color --wait"
 
