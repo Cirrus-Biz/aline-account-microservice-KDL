@@ -127,6 +127,7 @@ pipeline {
                 sh "export AWS_PROFILE=KDL-AWS-PROFILE"                
                 
                 sh "docker context create ecs kdl-ecs --from-env"
+                sh "aws ecr get-login-password --region ${AWS_REGION_WEST} | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_WEST}"                 
                 sh "docker context use kdl-ecs"
                 sh "docker compose up -d --no-color --wait"
 
