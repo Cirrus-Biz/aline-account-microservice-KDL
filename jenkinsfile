@@ -122,7 +122,7 @@ pipeline {
 
                 sh "aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} --profile KDL-AWS-PROFILE"
 
-                sh "aws configure set default.region ${AWS_REGION_WEST} --profile KDL-AWS-PROFILE" 
+                sh "aws configure set region ${AWS_REGION_WEST} --profile KDL-AWS-PROFILE" 
 
                 sh "aws configure set output json --profile KDL-AWS-PROFILE"
 
