@@ -132,11 +132,12 @@ pipeline {
 
                 // sh "aws configure get region"          
                 
-                // sh "docker context create ecs kdl-ecs --from-env"
+                sh "docker context create ecs kdl-ecs --from-env"
+      
 
-                sh "export"
              
                 sh "docker context use kdl-ecs"
+                sh "export AWS_PROFILE=KDL-AWS-PROFILE"
                 sh "docker compose up -d --no-color --wait"
 
                    
