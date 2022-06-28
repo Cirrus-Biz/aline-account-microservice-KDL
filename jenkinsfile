@@ -115,9 +115,7 @@ pipeline {
             steps{
                 script{ 
                 sh "docker context use default" 
-                
-                
-
+            
                 sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY} --profile KDL-AWS-PROFILE"
 
                 sh "aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} --profile KDL-AWS-PROFILE"
@@ -161,7 +159,7 @@ pipeline {
             // sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/*'
             // sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/.git*'
             // sh "aws configure set default.region ${AWS_REGION}" 
-            // sh "docker context rm kdl-ecs"
+            sh "docker context rm kdl-ecs"
         }
     }
 }
