@@ -132,9 +132,9 @@ pipeline {
 
                 // sh "aws ecr get-login-password --region ${AWS_REGION_WEST} | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_WEST}"   
 
-                sh "aws configure get region"          
+                // sh "aws configure get region"          
                 
-                // sh "docker context create ecs kdl-ecs --from-env"
+                sh "docker context create ecs kdl-ecs --from-env"
 
                 sh "export"
              
