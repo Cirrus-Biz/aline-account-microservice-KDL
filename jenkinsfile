@@ -111,24 +111,27 @@ pipeline {
             steps{
                 script{                  
                     // sh "docker context create ecs kdl-ecs --from-env"
-
-
-                    sh "aws ecr get-login-password --region ${AWS_REGION_WEST} | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_WEST}" 
+                    docker.withRegistry("https://$env.AWS_ECR_REGISTRY_WEST", "ecr:$env.AWS_REGION_WEST:AWS-KDL"){
+                        sh "aws ecr get-login-password --region ${AWS_REGION_WEST} | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_WEST}" 
             
-                    sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY} --profile KDL-AWS-PROFILE"
+                        sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY} --profile KDL-AWS-PROFILE"
 
-                    sh "aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} --profile KDL-AWS-PROFILE"
+                        sh "aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} --profile KDL-AWS-PROFILE"
 
-                    sh "aws configure set region ${AWS_REGION_WEST} --profile KDL-AWS-PROFILE" 
+                        sh "aws configure set region ${AWS_REGION_WEST} --profile KDL-AWS-PROFILE" 
 
-                    sh "aws configure set output json --profile KDL-AWS-PROFILE"
+                        sh "aws configure set output json --profile KDL-AWS-PROFILE"
 
-                    sh "export AWS_PROFILE=KDL-AWS-PROFILE"     
-                    sh "docker context use kdl-ecs"
+                        sh "export AWS_PROFILE=KDL-AWS-PROFILE"     
+                        sh "docker context use kdl-ecs"
 
                                         
  
-                    sh "docker compose up -d --no-color"
+                        sh "docker compose up -d --no-color"
+                    }
+
+
+
 
 
                     // sh "echo ${DOCKER_PASSWORD_KDL} | docker login --username ${DOCKER_USERNAME_KDL} --password-stdin"                  
