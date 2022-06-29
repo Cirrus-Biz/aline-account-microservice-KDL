@@ -132,7 +132,7 @@ pipeline {
 
                 // sh "aws configure get region"          
                 
-                sh "docker context create ecs kdl-ecs --from-env"
+                // sh "docker context create ecs kdl-ecs --from-env"
       
 
              
@@ -160,7 +160,7 @@ pipeline {
             // sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/*'
             // sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/.git*'
             // sh "aws configure set default.region ${AWS_REGION}" 
-            // sh "docker context rm kdl-ecs"
+            sh "docker context rm kdl-ecs"
         }
     }
 }
