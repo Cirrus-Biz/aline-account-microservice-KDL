@@ -116,7 +116,7 @@ pipeline {
                 script{ 
                 docker.withRegistry("https://$env.AWS_ECR_REGISTRY_WEST", "ecr:$env.AWS_REGION_WEST:AWS-KDL"){
                     sh "docker context use default"                     
-                    sh "docker context create ecs kdl-ecs --from-env"
+                    // sh "docker context create ecs kdl-ecs --from-env"
 
                     sh "echo ${KDL_NLB}"
       
