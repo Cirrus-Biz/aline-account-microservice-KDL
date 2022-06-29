@@ -132,7 +132,7 @@ pipeline {
 
                 // sh "aws configure get region"          
                 
-                // sh "docker context create ecs kdl-ecs --from-env"
+                sh "docker context create ecs kdl-ecs --from-env"
       
 
              
