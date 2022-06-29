@@ -123,20 +123,14 @@ pipeline {
                         sh "aws configure set output json --profile KDL-AWS-PROFILE"
 
                         sh "export AWS_PROFILE=KDL-AWS-PROFILE"    
-                        sh "docker context create ecs kdl-ecs-test --from-env"
+                        // sh "docker context create ecs kdl-ecs-test --from-env"
 
                         sh "docker context use kdl-ecs"
 
                                         
  
                         sh "docker compose up -d --no-color"
-                    
-
-
-
-
-
-                    // sh "echo ${DOCKER_PASSWORD_KDL} | docker login --username ${DOCKER_USERNAME_KDL} --password-stdin"                  
+                                   
                 }
 
             }
