@@ -10,7 +10,7 @@ pipeline {
         COMMIT = ""
         DATE = new Date().format('M-yy')
         githubtoken = credentials("Github-token-KDL")
-        AWS_ACCESS_KEY = credentials("KDL-SECRET-KEY")
+        AWS_ACCESS_KEY_ID = credentials("KDL-SECRET-KEY")
         AWS_SECRET_ACCESS_KEY = credentials("KDL-SECRET-KEY-2")
         AWS_PROFILE_KDL1 = credentials("KDL-AWS-PROFILE")
         DOCKER_USERNAME_KDL = credentials("Docker-username-KDL")
@@ -116,7 +116,7 @@ pipeline {
                 script{ 
                 sh "docker context use default" 
             
-                sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY} --profile KDL-AWS-PROFILE"
+                sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID} --profile KDL-AWS-PROFILE"
 
                 sh "aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} --profile KDL-AWS-PROFILE"
 
@@ -131,14 +131,15 @@ pipeline {
                 // sh "aws ecr get-login-password --region ${AWS_REGION_WEST} | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_WEST}"   
 
                 // sh "aws configure get region"          
-                
+                sh "echo ${AWS_ACCESS_KEY_ID}"
+                sh "echo ${AWS_SECRET_ACCESS_KEY}"
                 sh "docker context create ecs kdl-ecs --from-env"
       
 
              
                 sh "docker context use kdl-ecs"
                 sh "export AWS_PROFILE=KDL-AWS-PROFILE"
-                sh "docker compose up -d --no-color --wait"
+                sh "docker compose up -d --no-color"
 
                    
                 }
