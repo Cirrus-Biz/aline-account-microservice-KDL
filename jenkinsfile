@@ -138,7 +138,7 @@ pipeline {
              
                 sh "docker context use kdl-ecs"
                 sh "export AWS_PROFILE=KDL-AWS-PROFILE"
-                sh "sudo docker compose up -d --no-color --wait"
+                sh "docker compose up -d --no-color --wait"
 
                    
                 }
@@ -160,7 +160,7 @@ pipeline {
             // sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/*'
             // sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/.git*'
             // sh "aws configure set default.region ${AWS_REGION}" 
-            sh "docker context rm kdl-ecs"
+            // sh "docker context rm kdl-ecs"
         }
     }
 }
