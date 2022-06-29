@@ -116,21 +116,22 @@ pipeline {
                 script{                  
                     // sh "docker context create ecs kdl-ecs --from-env"
 
-                    sh "docker context use kdl-ecs"
- 
-                    sh "docker compose up -d --no-color"
 
 
             
-                // sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID} --profile KDL-AWS-PROFILE"
+                sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID} --profile KDL-AWS-PROFILE"
 
-                // sh "aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} --profile KDL-AWS-PROFILE"
+                sh "aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} --profile KDL-AWS-PROFILE"
 
-                // sh "aws configure set region ${AWS_REGION_WEST} --profile KDL-AWS-PROFILE" 
+                sh "aws configure set region ${AWS_REGION_WEST} --profile KDL-AWS-PROFILE" 
 
-                // sh "aws configure set output json --profile KDL-AWS-PROFILE"
+                sh "aws configure set output json --profile KDL-AWS-PROFILE"
 
-                // sh "export AWS_PROFILE=KDL-AWS-PROFILE"     
+                sh "export AWS_PROFILE=KDL-AWS-PROFILE"     
+                sh "docker context use kdl-ecs"
+ 
+                sh "docker compose up -d --no-color"
+
 
                 // sh "echo ${DOCKER_PASSWORD_KDL} | docker login --username ${DOCKER_USERNAME_KDL} --password-stdin"
 
