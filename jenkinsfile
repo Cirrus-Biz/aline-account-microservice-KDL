@@ -9,6 +9,8 @@ pipeline {
     environment{
         COMMIT = ""
         DATE = new Date().format('M-yy')
+        DOCKER_USERNAME = credentials('Docker-username-KDL')
+        DOCKER_PASSWORD = credentials('Docker-Password-KDL')
         githubtoken = credentials("Github-token-KDL")
         AWS_ACCESS_KEY = credentials("KDL-SECRET-KEY")
         AWS_SECRET_ACCESS_KEY = credentials("KDL-SECRET-KEY-2")
@@ -56,7 +58,7 @@ pipeline {
         //             COMMIT = "${GIT_COMMIT}"
         //             SLICE = COMMIT[1..7]
         //             sh "sudo docker build -t $env.AWS_ECR_REGISTRY_WEST/account-microservice-kdl:${SLICE}.${BUILD_NUMBER}.${DATE} ."
-        //             sh "sudo docker build -t $env.AWS_ECR_REGISTRY_WEST/account-microservice-kdl:${SLICE}.${BUILD_NUMBER}.${DATE} ."
+        //             sh "sudo docker build -t $env.AWS_ECR_REGISTRY_WEST/account-microservice-kdl:latest ."
         //         }
                 
 
@@ -83,36 +85,13 @@ pipeline {
             }
         }
 
-        // stage ("docker/AWS cli login"){
-        //     steps{
-        //         script{
-
-
-
-        //         sh "docker context use default" 
-
-        //         sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY} --profile KDL-AWS-PROFILE"
-
-        //         sh "aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} --profile KDL-AWS-PROFILE"
-
-        //         sh "aws configure set default.region ${AWS_REGION_WEST} --profile KDL-AWS-PROFILE" 
-
-        //         sh "aws configure set output json --profile KDL-AWS-PROFILE"
-
-        //         sh "export AWS_PROFILE=KDL-AWS-PROFILE"
-
-        //         sh "aws ecr get-login-password --region ${AWS_REGION_WEST} | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_WEST}"                
-        //         }
-        //     }
-        // }
-
 
         stage("docker compose up"){
             steps{
                 script{                  
              
-                    // docker.withRegistry("https://$env.AWS_ECR_REGISTRY_WEST", "ecr:$env.AWS_REGION_WEST:AWS-KDL"){
-                    //     sh "aws ecr get-login-password --region ${AWS_REGION_WEST} | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_WEST}" 
+
+
             
                         sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY} --profile KDL-AWS-PROFILE"
 
@@ -122,13 +101,13 @@ pipeline {
 
                         sh "aws configure set output json --profile KDL-AWS-PROFILE"
 
-                        sh "export AWS_PROFILE=KDL-AWS-PROFILE"    
-                        // sh "docker context create ecs kdl-ecs-test --from-env"
+                        sh "export AWS_PROFILE=KDL-AWS-PROFILE"  
 
-                        sh "docker context use kdl-ecs"
+                        sh "aws ecr get-login-password --region ${AWS_REGION_WEST} | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_WEST}" 
 
-                                        
- 
+                        sh 'echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin'
+                        sh "docker context create ecs kdl-ecs --profile ${AWS_PROFILE}"
+                        sh "docker context use kdl-ecs"                
                         sh "docker compose up -d --no-color"
                                    
                 }
@@ -143,14 +122,13 @@ pipeline {
     post {
         always{
             sh "docker context use default"
-            // sh "sudo docker system prune --all -f"
-            // sh "sudo docker logout"
-            // sh "sudo rm -rf ~/.aws/"
-            // sh "sudo rm -rf ~/.sonar/*"
-            // sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/*'
-            // sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/.git*'
-            // sh "aws configure set default.region ${AWS_REGION}" 
-            // sh "docker context rm kdl-ecs"
+            sh "sudo docker system prune --all -f"
+            sh "sudo docker logout"
+            sh "sudo rm -rf ~/.aws/"
+            sh "sudo rm -rf ~/.sonar/*"
+            sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/*'
+            sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/.git*'
+            sh "docker context rm kdl-ecs"
         }
     }
 }
