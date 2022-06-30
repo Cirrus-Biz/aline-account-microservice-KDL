@@ -94,7 +94,7 @@ pipeline {
 
                         sh 'docker logout'
                         sh 'docker context use default'
-                        sh 'echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin'
+
 
                         sh 'aws configure set aws_access_key_id ${AWS_ACCESS_KEY} --profile KDL-AWS-PROFILE'
 
@@ -109,7 +109,7 @@ pipeline {
 
 
 
-                     
+                        sh 'echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin'                     
                         sh 'docker context create ecs kdl-ecs --profile KDL-AWS-PROFILE'
                         sh 'docker context use kdl-ecs'                
                         sh 'docker compose up -d --no-color'
