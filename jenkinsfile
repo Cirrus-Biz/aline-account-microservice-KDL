@@ -11,9 +11,9 @@ pipeline {
         DATE = new Date().format('M-yy')
         DOCKER_USERNAME = credentials('Docker-username-KDL')
         DOCKER_PASSWORD = credentials('Docker-Password-KDL')
-        githubtoken = credentials("Github-token-KDL")
-        AWS_ACCESS_KEY = credentials("KDL-SECRET-KEY")
-        AWS_SECRET_ACCESS_KEY = credentials("KDL-SECRET-KEY-2")
+        githubtoken = credentials('Github-token-KDL')
+        AWS_ACCESS_KEY = credentials('KDL-SECRET-KEY')
+        AWS_SECRET_ACCESS_KEY = credentials('KDL-SECRET-KEY-2')
         THE_BUTLER_SAYS_SO=credentials('AWS-KDL')
 
     }
@@ -81,7 +81,7 @@ pipeline {
         stage("Grab docker compose file"){
             steps {
 
-                sh "curl -H 'Authorization: token ${githubtoken}' https://raw.githubusercontent.com/Cirrus-Biz/DevOPS-KDL/dev/AWS/docker-compose.yaml -o docker-compose.yaml"
+                sh 'curl -H "Authorization: token ${githubtoken}" https://raw.githubusercontent.com/Cirrus-Biz/DevOPS-KDL/dev/AWS/docker-compose.yaml -o docker-compose.yaml'
             }
         }
 
@@ -92,23 +92,24 @@ pipeline {
              
 
 
-            
-                        sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY} --profile KDL-AWS-PROFILE"
+                        sh 'docker logout'
+                        sh 'docker context use default'
+                        sh 'aws configure set aws_access_key_id ${AWS_ACCESS_KEY} --profile KDL-AWS-PROFILE'
 
-                        sh "aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} --profile KDL-AWS-PROFILE"
+                        sh 'aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} --profile KDL-AWS-PROFILE'
 
-                        sh "aws configure set region ${AWS_REGION_WEST} --profile KDL-AWS-PROFILE" 
+                        sh 'aws configure set region ${AWS_REGION_WEST} --profile KDL-AWS-PROFILE' 
 
-                        sh "aws configure set output json --profile KDL-AWS-PROFILE"
+                        sh 'aws configure set output json --profile KDL-AWS-PROFILE'
 
-                        sh "export AWS_PROFILE=KDL-AWS-PROFILE"  
+                        sh 'export AWS_PROFILE=KDL-AWS-PROFILE'  
 
-                        sh "aws ecr get-login-password --region ${AWS_REGION_WEST} | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_WEST}" 
+                        sh 'aws ecr get-login-password --region ${AWS_REGION_WEST} | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_WEST}' 
 
                         sh 'echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin'
-                        sh "docker context create ecs kdl-ecs --profile ${AWS_PROFILE}"
-                        sh "docker context use kdl-ecs"                
-                        sh "docker compose up -d --no-color"
+                        sh 'docker context create ecs kdl-ecs --profile KDL-AWS-PROFILE'
+                        sh 'docker context use kdl-ecs'                
+                        sh 'docker compose up -d --no-color'
                                    
                 }
 
@@ -121,14 +122,14 @@ pipeline {
 
     post {
         always{
-            sh "docker context use default"
-            sh "sudo docker system prune --all -f"
-            sh "sudo docker logout"
-            sh "sudo rm -rf ~/.aws/"
-            sh "sudo rm -rf ~/.sonar/*"
+            sh 'docker context use default'
+            sh 'docker system prune --all -f'
+            sh 'docker logout'
+            sh 'sudo rm -rf ~/.aws/'
+            sh 'sudo rm -rf ~/.sonar/*'
             sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/*'
             sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/.git*'
-            sh "docker context rm kdl-ecs"
+            sh 'docker context rm kdl-ecs'
         }
     }
 }
