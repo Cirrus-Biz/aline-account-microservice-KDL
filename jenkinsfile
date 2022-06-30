@@ -88,9 +88,8 @@ pipeline {
 
         stage("docker compose up"){
             steps{
-                script{                  
-             
-
+                script{     
+                    docker.withRegistry("https://$env.AWS_ECR_REGISTRY_WEST", "ecr:$env.AWS_REGION_WEST:AWS-KDL"){                                 
 
                         sh 'docker logout'
                         sh 'docker context use default'
@@ -113,7 +112,7 @@ pipeline {
                         sh 'docker context create ecs kdl-ecs --profile kdl-aws-profile'
                         sh 'docker context use kdl-ecs'                
                         sh 'docker compose up -d --no-color'
-                                   
+                    }              
                 }
 
             }
