@@ -90,7 +90,8 @@ pipeline {
 
         stage("docker compose up"){
             steps{
-                script{     
+                script{  
+                    docker.withRegistry("https://$env.AWS_ECR_REGISTRY_WEST", "ecr:$env.AWS_REGION_WEST:AWS-KDL"){   
                                
                         sh 'docker logout'
                         sh 'docker context use default'
@@ -109,14 +110,20 @@ pipeline {
 
 
 
-                        sh 'echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin'    
+  
 
-                        sh 'aws ecr get-login-password --region ${AWS_REGION_WEST} | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_WEST}' 
+                        sh 'aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_WEST}' 
+
+                        sh 'echo ${AWS_ECR_REGISTRY_WEST}'
+
+
+                        sh 'echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin'                          
                  
                         sh 'docker context create ecs kdl-ecs --profile kdl-aws-profile'
                         sh 'docker context use kdl-ecs'                
                         sh 'docker compose up -d --no-color'
                                 
+                    }   
                 }
 
             }
