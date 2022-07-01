@@ -114,7 +114,7 @@ pipeline {
 
                         sh 'echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin'                          
                
-                        sh 'docker context create ecs kdl-ecs --from-env'
+                        sh 'docker context create ecs kdl-ecs --profile KDL-AWS-PROFILE'
 
 
 
