@@ -104,10 +104,6 @@ pipeline {
 
                         sh 'aws configure set output json --profile KDL-AWS-PROFILE'
 
-                        sh 'export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY}'
-                        sh 'export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}'
-                        sh 'export region=us-west-2'
-                        sh 'export output=json'
 
   
 
@@ -118,7 +114,7 @@ pipeline {
 
                         sh 'echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin'                          
                
-                        sh 'docker context create ecs kdl-ecs --aws-profile KDL-PROFILE'
+                        sh 'docker context create ecs kdl-ecs --from-env'
 
 
 
