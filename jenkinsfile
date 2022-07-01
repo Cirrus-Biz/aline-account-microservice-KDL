@@ -121,7 +121,7 @@ pipeline {
                         sh 'docker context use kdl-ecs'                
                         sh 'docker compose up -d --no-color'
                                 
-                    }   
+                    
                 }
 
             }
