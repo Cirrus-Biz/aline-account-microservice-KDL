@@ -102,7 +102,7 @@ pipeline {
 
                         sh 'aws configure set region ${AWS_REGION_WEST} --profile KDL-AWS-PROFILE' 
 
-                        sh 'aws configure set output json --profile KDL-AWS-PROFILE'
+                        sh 'aws configure set output json --profile kdl-aws-profile'
                         sh 'export AWS_PROFILE=KDL-AWS-PROFILE'
 
 
