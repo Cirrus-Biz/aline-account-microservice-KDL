@@ -119,7 +119,9 @@ pipeline {
                         sh 'echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin'                          
                         sh 'export AWS_PROFILE=KDL-AWS-PROFILE'                  
                         sh 'docker context create ecs kdl-ecs --profile kdl-aws-profile'
-                        sh 'docker context use kdl-ecs'                
+                        sh 'export AWS_PROFILE=KDL-AWS-PROFILE'  
+                        sh 'docker context use kdl-ecs'     
+                        sh 'export AWS_PROFILE=KDL-AWS-PROFILE'             
                         sh 'docker compose up -d --no-color'
                                 
                     
