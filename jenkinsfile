@@ -103,7 +103,7 @@ pipeline {
                         sh 'aws configure set region ${AWS_REGION_WEST} --profile KDL-AWS-PROFILE' 
 
                         sh 'aws configure set output json --profile KDL-AWS-PROFILE'
-                        sh 'export AWS_PROFILE=KDL-AWS-PROFILE'  
+
 
 
 
@@ -112,11 +112,12 @@ pipeline {
   
 
                         sh 'aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_WEST}' 
+                        sh 'export AWS_PROFILE=KDL-AWS-PROFILE'                          
 
 
 
                         sh 'echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin'                          
-                 
+                        sh 'export AWS_PROFILE=KDL-AWS-PROFILE'                  
                         sh 'docker context create ecs kdl-ecs --profile kdl-aws-profile'
                         sh 'docker context use kdl-ecs'                
                         sh 'docker compose up -d --no-color'
@@ -135,13 +136,13 @@ pipeline {
         always{
             sh 'docker context use default'
             sh 'docker system prune --all -f'
-            // sh 'docker logout'
-            // sh 'sudo rm -rf ~/.aws/'
-            // sh 'sudo rm -rf ~/.docker/'
-            // sh 'sudo rm -rf ~/.sonar/*'
-            // sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/*'
-            // sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/.git*'
-            // sh 'docker context rm kdl-ecs'
+            sh 'docker logout'
+            sh 'sudo rm -rf ~/.aws/'
+            sh 'sudo rm -rf ~/.docker/'
+            sh 'sudo rm -rf ~/.sonar/*'
+            sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/*'
+            sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/.git*'
+            sh 'docker context rm kdl-ecs'
         }
     }
 }
