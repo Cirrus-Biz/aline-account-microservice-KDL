@@ -96,14 +96,14 @@ pipeline {
                         sh 'docker context use default'
 
 
-                        sh 'aws configure set AWS_ACCESS_KEY_ID ${AWS_ACCESS_KEY} --profile KDL-AWS-PROFILE'
+                        sh 'aws configure set AWS_ACCESS_KEY_ID ${AWS_ACCESS_KEY} --profile kdl-aws-profile'
 
-                        sh 'aws configure set AWS_SECRET_ACCESS_KEY ${AWS_SECRET_ACCESS_KEY} --profile KDL-AWS-PROFILE'
+                        sh 'aws configure set AWS_SECRET_ACCESS_KEY ${AWS_SECRET_ACCESS_KEY} --profile kdl-aws-profile'
 
-                        sh 'aws configure set region ${AWS_REGION_WEST} --profile KDL-AWS-PROFILE' 
+                        sh 'aws configure set region ${AWS_REGION_WEST} --profile kdl-aws-profile' 
 
                         sh 'aws configure set output json --profile kdl-aws-profile'
-                        sh 'export AWS_PROFILE=KDL-AWS-PROFILE'
+                        sh 'export AWS_PROFILE=kdl-aws-profile'
 
 
   
@@ -115,7 +115,7 @@ pipeline {
 
                         sh 'echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin'                          
                
-                        sh 'docker context create ecs kdl-ecs --profile KDL-AWS-PROFILE'
+                        sh 'docker context create ecs kdl-ecs --profile kdl-aws-profile'
 
 
 
