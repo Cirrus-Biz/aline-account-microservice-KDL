@@ -83,14 +83,16 @@ pipeline {
 
                 sh 'curl -H "Authorization: token ${githubtoken}" https://raw.githubusercontent.com/Cirrus-Biz/DevOPS-KDL/dev/AWS/docker-compose.yaml -o docker-compose.yaml'
 
-                sh 'cat docker-compose.yaml'
+
             }
         }
 
 
         stage("docker compose up"){
             steps{
-                script{  
+                script{
+
+                        sh 'cat docker-compose.yaml'
         
                         sh 'docker logout'
                         sh 'docker context use default'
@@ -111,12 +113,12 @@ pipeline {
 
                         sh "aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin ${env.AWS_ECR_REGISTRY_WEST}"
                
-                        sh 'docker context create ecs kdl-ecs --profile kdl-aws-profile'
+                        // sh 'docker context create ecs kdl-ecs --profile kdl-aws-profile'
 
                         sh 'docker context use kdl-ecs'     
 
           
-                        sh 'docker compose -p "kdl-ecs" up -d --no-color'
+                        sh 'docker compose -p "kdl-ecs" --file docker-compose.yaml up -d --no-color'
                                 
                     
                 }
