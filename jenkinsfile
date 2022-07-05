@@ -120,7 +120,7 @@ pipeline {
 
                         sh 'docker context use kdl-ecs'     
           
-                        sh 'docker compose up -d --no-color'
+                        sh 'docker compose -p "kdl-aline-ecs" up -d --no-color'
                                 
                     
                 }
