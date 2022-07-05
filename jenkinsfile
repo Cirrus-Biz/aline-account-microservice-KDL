@@ -19,31 +19,31 @@ pipeline {
     }
 
     stages {
-        stage('SonarQube Analysis') {
-            steps{
-                script{
-                    withSonarQubeEnv(installationName: "sonarqube") {
-                        sh "mvn clean test verify sonar:sonar -Dsonar.projectKey=account-microservice-kdl"
-                        }
-                }
+        // stage('SonarQube Analysis') {
+        //     steps{
+        //         script{
+        //             withSonarQubeEnv(installationName: "sonarqube") {
+        //                 sh "mvn clean test verify sonar:sonar -Dsonar.projectKey=account-microservice-kdl"
+        //                 }
+        //         }
 
-            }       
-        }
+        //     }       
+        // }
 
-        stage('Quality Gate Check'){
-            steps{
-                script{
-                     timeout(time: 2, unit: 'MINUTES'){
-                        def qg = waitForQualityGate()
-                        if(qg.status != 'OK'){
-                            error "Pipeline aborted due to quality gate failure"
-                    }
-                     }
+        // stage('Quality Gate Check'){
+        //     steps{
+        //         script{
+        //              timeout(time: 2, unit: 'MINUTES'){
+        //                 def qg = waitForQualityGate()
+        //                 if(qg.status != 'OK'){
+        //                     error "Pipeline aborted due to quality gate failure"
+        //             }
+        //              }
 
-                    }
-                }
+        //             }
+        //         }
                 
-            }
+        //     }
         
         stage("Build w/MVN") {
             steps {
@@ -110,11 +110,6 @@ pipeline {
   
 
                         sh "aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin ${env.AWS_ECR_REGISTRY_WEST}"
-                      
-
-
-
-                        
                
                         sh 'docker context create ecs kdl-ecs --profile kdl-aws-profile'
 
