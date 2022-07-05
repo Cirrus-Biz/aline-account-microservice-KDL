@@ -116,7 +116,7 @@ pipeline {
                         sh 'docker context use kdl-ecs'     
 
           
-                        sh 'docker compose up -d --no-color'
+                        sh 'docker compose -p "kdl-ecs" up -d --no-color'
                                 
                     
                 }
@@ -138,7 +138,7 @@ pipeline {
             sh 'sudo rm -rf ~/.sonar/*'
             sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/*'
             sh 'sudo rm -rf ~/jenkins/workspace/${JOB_NAME}/.git*'
-            sh 'docker context rm kdl-ecs'         
+            // sh 'docker context rm kdl-ecs'         
         }
     }
 }
