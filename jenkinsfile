@@ -116,9 +116,10 @@ pipeline {
                         sh 'docker context create ecs kdl-ecs --profile kdl-aws-profile'
 
                         sh 'docker context use kdl-ecs'     
-
-          
+                        
+                        timeout(time: 2, unit: 'MINUTES'){
                         sh 'docker compose --file kdl-ecs.yaml up -d --no-color'
+                        }
                                 
                     
                 }
