@@ -81,7 +81,7 @@ pipeline {
         stage("Grab docker compose file"){
             steps {
 
-                sh 'curl -H "Authorization: token ${githubtoken}" https://raw.githubusercontent.com/Cirrus-Biz/DevOPS-KDL/dev/AWS/docker-compose.yaml -o kdl-ecs.yaml'
+                sh 'curl -H "Authorization: token ${githubtoken}" https://raw.githubusercontent.com/Cirrus-Biz/DevOPS-KDL/dev/AWS/docker-compose.yaml -o docker-compose.yaml'
 
 
             }
@@ -92,7 +92,7 @@ pipeline {
             steps{
                 script{
 
-                        sh 'cat kdl-ecs.yaml'
+                        sh 'cat docker-compose.yaml'
         
                         sh 'docker logout'
                         sh 'docker context use default'
@@ -117,9 +117,8 @@ pipeline {
 
                         sh 'docker context use kdl-ecs'     
                         
-                        timeout(time: 2, unit: 'MINUTES'){
-                        sh 'docker compose --file kdl-ecs.yaml up -d --no-color'
-                        }
+
+                        sh 'docker compose -p "kdl-ecs" up -d --no-color'
                                 
                     
                 }
